@@ -1,0 +1,98 @@
+# Remove All Occurrences of a Substring (LeetCode 1910)
+
+## Problem Statement
+
+Given two strings `s` and `part`, perform the following operation on `s` until all occurrences of the substring `part` are removed:
+
+- Find the leftmost occurrence of the substring `part` and remove it from `s`.
+- Return `s` after removing all occurrences of `part`.
+
+A substring is a contiguous sequence of characters in a string.
+
+### Example 1:
+
+**Input:**
+
+```
+s = "daabcbaabcbc", part = "abc"
+```
+
+**Output:**
+
+```
+"dab"
+```
+
+**Explanation:**
+- Remove "abc" starting at index 2, so `s = "dabaabcbc"`.
+- Remove "abc" starting at index 4, so `s = "dababc"`.
+- Remove "abc" starting at index 3, so `s = "dab"`.
+- Now, `s` has no occurrences of "abc".
+
+---
+
+### Example 2:
+
+**Input:**
+
+```
+s = "axxxxyyyyb", part = "xy"
+```
+
+**Output:**
+
+```
+"ab"
+```
+
+**Explanation:**
+- Remove "xy" starting at index 4, so `s = "axxxyyyb"`.
+- Remove "xy" starting at index 3, so `s = "axxyyb"`.
+- Remove "xy" starting at index 2, so `s = "axyb"`.
+- Remove "xy" starting at index 1, so `s = "ab"`.
+- Now, `s` has no occurrences of "xy".
+
+---
+
+## Solution Approach
+
+We can solve this problem using a simple iterative approach with the `String.contains()` method.
+
+### Key Observations:
+1. As long as the string `s` contains `part`, we need to remove its leftmost occurrence.
+2. We can use `s.indexOf(part)` to find the leftmost index where `part` occurs.
+3. Use `substring()` to remove the `part` and concatenate the remaining parts of the string.
+4. Repeat the process until no more occurrences of `part` exist in `s`.
+
+### Java Solution
+
+```java
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        // Continue removing occurrences of 'part' as long as it exists in 's'
+        while (s.contains(part)) {
+            // Find the index of the leftmost occurrence of 'part'
+            int partStartIndex = s.indexOf(part);
+
+            // Remove the substring 'part' from 's'
+            s = s.substring(0, partStartIndex) + s.substring(partStartIndex + part.length());
+        }
+        // Return the updated string after all occurrences are removed
+        return s;
+    }
+}
+```
+
+---
+
+## Complexity Analysis
+
+- **Time Complexity:** `O(n * m)` where `n` is the length of `s` and `m` is the length of `part`. In the worst case, we may have to scan and modify `s` multiple times.
+- **Space Complexity:** `O(1)`, since we only modify the input string and do not use extra space.
+
+---
+
+This approach efficiently removes all occurrences of the substring `part` from `s` while maintaining optimal performance.
+
+### Happy Coding! 🚀
+
