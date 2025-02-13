@@ -1,0 +1,94 @@
+      Minimum Operations to Exceed Threshold Value II
+      Problem Overview:
+      You are given a 0-indexed integer array nums and an integer k. The goal is to apply a specific operation in order to ensure that all elements of the array are greater than or equal to k.
+      
+      The operation is defined as:
+      Take the two smallest integers x and y in nums.
+      Remove x and y from nums.
+      Add min(x, y) * 2 + max(x, y) to nums.
+      Repeat this operation until all elements in nums are greater than or equal to k.
+      Your task is to return the minimum number of operations needed to achieve this.
+      
+      Example 1:
+      plaintext
+      Copy
+      Input: nums = [2,11,10,1,3], k = 10
+      Output: 2
+      Explanation:
+      After the first operation, nums becomes [4, 11, 10, 3].
+      After the second operation, nums becomes [10, 11, 10].
+      At this point, all elements are >= 10.
+      Example 2:
+      plaintext
+      Copy
+      Input: nums = [1,1,2,4,9], k = 20
+      Output: 4
+      Explanation:
+      After one operation, nums becomes [2, 4, 9, 3].
+      After two operations, nums becomes [7, 4, 9].
+      After three operations, nums becomes [15, 9].
+      After four operations, nums becomes [33].
+      At this point, all elements are >= 20.
+      Solution Overview:
+      The approach is based on using a min-heap (priority queue) to repeatedly extract the two smallest elements, apply the operation, and add the new number back into the heap. This ensures that each operation results in the most efficient increase of the smallest elements in the array.
+      
+      Steps:
+      Initialize the min-heap: We use a priority queue (min-heap) to always extract the two smallest elements efficiently.
+      Repeat the operation: While the smallest element in the heap is less than k, extract the two smallest elements, compute the new element, and add it back to the heap.
+      Count the operations: Track the number of operations performed.
+      Return the result: Once all elements in the heap are greater than or equal to k, return the total number of operations.
+      Code:
+      java
+      Copy
+      import java.util.*;
+      
+      class Solution {
+          public int minOperations(int[] nums, int k) {
+              PriorityQueue<Long> minHeap = new PriorityQueue<Long>(
+                  Arrays.stream(nums)
+                      .mapToLong(i -> (long) i)
+                      .boxed()
+                      .collect(Collectors.toList())
+              );
+              int numOperations = 0;
+      
+              while (minHeap.peek() < k) {
+                  long x = minHeap.remove();
+                  long y = minHeap.remove();
+                  minHeap.add(Math.min(x, y) * 2 + Math.max(x, y));
+      
+                  numOperations++;
+              }
+              return numOperations;
+          }
+      }
+      Explanation of Code:
+      PriorityQueue<Long> minHeap: A priority queue (min-heap) is created using nums. This allows us to efficiently retrieve the two smallest elements.
+      Arrays.stream(nums): This converts the nums array into a stream of Long objects (since we need to store large numbers after operations).
+      Operation: We repeatedly remove the two smallest elements from the heap, apply the operation, and insert the result back into the heap.
+      Exit condition: The loop continues until the smallest element in the heap is greater than or equal to k.
+      numOperations: A counter is used to track the number of operations.
+      Time Complexity Analysis:
+      Operations Involved:
+      Heap Operations:
+      In each iteration, we perform two remove operations and one insert operation on the heap.
+      Each heap operation (insert or remove) takes O(log n) time, where n is the number of elements in the heap.
+      Loop Iterations:
+      The loop continues until all elements in the heap are greater than or equal to k. The number of iterations will depend on how many operations it takes to reach this condition.
+      Time Complexity:
+      Heap Initialization: Initializing the heap from the nums array takes O(n log n), where n is the length of the array.
+      Heap Operations: In each iteration, we perform constant-time operations on the heap (removal and insertion), and each heap operation takes O(log n) time.
+      Therefore, the time complexity for the main loop is O(m log n), where m is the number of operations required to make all elements greater than or equal to k.
+      Thus, the overall time complexity is O(n log n + m log n), where n is the size of the array and m is the number of operations.
+      
+      Space Complexity:
+      The space complexity is O(n), as we are using a priority queue to store all elements of the nums array.
+      Constraints:
+      2 <= nums.length <= 2 * 10^5
+      1 <= nums[i] <= 10^9
+      1 <= k <= 10^9
+      Given these constraints, the solution is efficient enough for the input sizes.
+      
+      Conclusion:
+      This approach leverages the priority queue (min-heap) to efficiently manage the two smallest elements at each step, ensuring that the minimum number of operations is performed. The solution is optimal in both time and space complexity for the problem constraints.
+      
