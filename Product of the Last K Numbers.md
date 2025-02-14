@@ -1,6 +1,3 @@
-Here is a README file for GitHub based on your provided solution for the "Product of the Last K Numbers" problem. This README also includes the time and space complexity analysis.
-
----
 
 # Product of the Last K Numbers
 
