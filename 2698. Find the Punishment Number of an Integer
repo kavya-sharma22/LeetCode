@@ -1,4 +1,4 @@
-Sure! Here's a `README.md` for the previous problem, formatted similarly to the example you provided:
+Here's the fully markdown-formatted README file for the "Punishment Number of an Integer" problem:
 
 ```markdown
 # Punishment Number of an Integer
@@ -128,4 +128,4 @@ This solution efficiently computes the punishment number of a given integer usin
 - **Solution**: The Java solution code.
 - **Complexity Analysis**: A concise version of the complexity analysis.
 
-This README should be a clear and concise guide for anyone interested in understanding or using the solution to the problem.
+This file will now render properly with the correct Markdown formatting when viewed on GitHub. Let me know if you need anything else!
