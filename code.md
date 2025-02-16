@@ -1,1 +1,121 @@
+# Construct the Lexicographically Largest Valid Sequence (LeetCode 1718)
+
+## Problem Statement
+Given an integer `n`, find a sequence that satisfies all of the following:
+
+1. The integer `1` occurs once in the sequence.
+2. Each integer between `2` and `n` occurs twice in the sequence.
+3. For every integer `i` between `2` and `n`, the distance between the two occurrences of `i` is exactly `i`.
+4. The sequence should be lexicographically largest.
+
+It is guaranteed that under the given constraints, there is always a solution.
+
+## Examples
+
+### Example 1:
+**Input:**  
+```java
+n = 3
+```
+**Output:**  
+```java
+[3,1,2,3,2]
+```
+**Explanation:**  
+`[2,3,2,1,3]` is also a valid sequence, but `[3,1,2,3,2]` is the lexicographically largest valid sequence.
+
+### Example 2:
+**Input:**  
+```java
+n = 5
+```
+**Output:**  
+```java
+[5,3,1,4,3,5,2,4,2]
+```
+
+## Constraints
+- `1 <= n <= 20`
+
+---
+
+## Solution Approach
+The problem is solved using **backtracking** to generate the lexicographically largest sequence. The algorithm follows these steps:
+
+1. **Initialize a sequence** of size `2*n - 1` filled with zeros.
+2. **Use a boolean array** to keep track of numbers that have already been placed.
+3. **Start recursive backtracking** from index `0`.
+4. **Place numbers from `n` to `1`** to ensure lexicographically largest order.
+5. **Follow constraints** where:
+   - `1` is placed once.
+   - For numbers `>= 2`, place them at `index` and `index + num` if both positions are free.
+6. **Backtrack** when an invalid state is reached and try the next possibility.
+
+---
+
+## Implementation (Java)
+```java
+public class Solution {
+    public int[] constructDistancedSequence(int targetNumber) {
+        int[] resultSequence = new int[targetNumber * 2 - 1];
+        boolean[] isNumberUsed = new boolean[targetNumber + 1];
+        
+        findLexicographicallyLargestSequence(0, resultSequence, isNumberUsed, targetNumber);
+        return resultSequence;
+    }
+
+    private boolean findLexicographicallyLargestSequence(int currentIndex, int[] resultSequence, boolean[] isNumberUsed, int targetNumber) {
+        if (currentIndex == resultSequence.length) {
+            return true;
+        }
+        if (resultSequence[currentIndex] != 0) {
+            return findLexicographicallyLargestSequence(currentIndex + 1, resultSequence, isNumberUsed, targetNumber);
+        }
+
+        for (int numberToPlace = targetNumber; numberToPlace >= 1; numberToPlace--) {
+            if (isNumberUsed[numberToPlace]) continue;
+
+            isNumberUsed[numberToPlace] = true;
+            resultSequence[currentIndex] = numberToPlace;
+
+            if (numberToPlace == 1 || (currentIndex + numberToPlace < resultSequence.length && resultSequence[currentIndex + numberToPlace] == 0)) {
+                if (numberToPlace != 1) {
+                    resultSequence[currentIndex + numberToPlace] = numberToPlace;
+                }
+
+                if (findLexicographicallyLargestSequence(currentIndex + 1, resultSequence, isNumberUsed, targetNumber)) {
+                    return true;
+                }
+                
+                if (numberToPlace != 1) {
+                    resultSequence[currentIndex + numberToPlace] = 0;
+                }
+            }
+            
+            resultSequence[currentIndex] = 0;
+            isNumberUsed[numberToPlace] = false;
+        }
+        
+        return false;
+    }
+}
+```
+
+---
+
+## Complexity Analysis
+- **Time Complexity:** `O(n!)` (worst case, since backtracking explores all possibilities)
+- **Space Complexity:** `O(n)` (due to recursion stack and boolean array for tracking used numbers)
+
+---
+
+## How to Run
+1. Copy the Java code into a new file (`Solution.java`).
+2. Compile and run the program with test cases.
+
+---
+
+## References
+- [LeetCode Problem 1718](https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence/)
+
 
