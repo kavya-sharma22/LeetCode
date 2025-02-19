@@ -1,0 +1,78 @@
+Here's a README file for your GitHub repository:  
+
+---
+
+# 🏆 The k-th Lexicographical Happy String  
+
+## 📌 Problem Statement  
+A **happy string** is a string that:  
+- Consists only of letters from the set `['a', 'b', 'c']`.  
+- Has no two adjacent characters that are the same (`s[i] != s[i + 1]`).  
+
+Given two integers `n` and `k`, this program finds the `k-th` lexicographical happy string of length `n`. If there are fewer than `k` happy strings, it returns an empty string.  
+
+## 📝 Example  
+### Input:  
+```java
+n = 3, k = 9
+```
+### Output:  
+```java
+"cab"
+```
+### Explanation:  
+The happy strings of length 3 in lexicographical order:  
+```
+["aba", "abc", "aca", "acb", "bab", "bac", "bca", "bcb", "cab", "cac", "cba", "cbc"]
+```
+The 9th string is **"cab"**.  
+
+## 🚀 Solution Approach  
+The program follows a **recursive backtracking** approach to generate all possible happy strings of length `n`:  
+1. It recursively builds valid happy strings by ensuring no two adjacent characters are the same.  
+2. The generated strings are stored in a list and sorted lexicographically.  
+3. If `k` is within the range of available happy strings, it returns the `k-th` string; otherwise, it returns an empty string.  
+
+## 💻 Code Implementation  
+```java
+import java.util.*;
+
+class Solution {
+    List<String> happyStrings = new ArrayList<>();
+
+    public String getHappyString(int n, int k) {
+        String currentString = "";
+        generateHappyStrings(n, currentString);
+
+        if (happyStrings.size() < k) return "";
+
+        Collections.sort(happyStrings);
+        return happyStrings.get(k - 1);
+    }
+
+    protected void generateHappyStrings(int n, String currentString) {
+        if (currentString.length() == n) {
+            happyStrings.add(currentString);
+            return;
+        }
+
+        for (char currentChar = 'a'; currentChar <= 'c'; currentChar++) {
+            if (currentString.length() > 0 &&
+                currentString.charAt(currentString.length() - 1) == currentChar)
+                continue;
+
+            generateHappyStrings(n, currentString + currentChar);
+        }
+    }
+}
+```
+
+## 🛠️ Complexity Analysis  
+- **Generating all happy strings**: `O(2^n)`, since each character has 2 valid choices except for the first character.  
+- **Sorting the list**: `O(m log m)`, where `m` is the number of happy strings.  
+- **Overall Complexity**: `O(2^n + m log m)`.  
+
+## 🎯 Constraints  
+- `1 <= n <= 10`  
+- `1 <= k <= total happy strings of length n`  
+
