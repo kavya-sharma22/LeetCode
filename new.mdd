@@ -1,4 +1,3 @@
-
 # LeetCode 2460: Apply Operations to an Array
 
 This repository contains the solution for [LeetCode Problem 2460 - Apply Operations to an Array](https://leetcode.com/problems/apply-operations-to-an-array/).
