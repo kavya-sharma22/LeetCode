@@ -101,9 +101,3 @@ class Solution {
 - `O(n)` for the `modifiedNums` array.
 
 ---
-
-## Links
-
-- [LeetCode Problem Link](https://leetcode.com/problems/apply-operations-to-an-array/)
-
----
