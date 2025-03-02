@@ -110,8 +110,3 @@ class Solution {
 - O(n + m) for the `TreeMap` and resulting array.
 
 ---
-
-## Links
-
-- [LeetCode Problem Link](https://leetcode.com/problems/merge-two-2d-arrays-by-summing-values/)
-
