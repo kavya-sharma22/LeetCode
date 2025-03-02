@@ -1,0 +1,124 @@
+
+# LeetCode 2570: Merge Two 2D Arrays by Summing Values
+
+This repository contains the solution for [LeetCode Problem 2570 - Merge Two 2D Arrays by Summing Values](https://leetcode.com/problems/merge-two-2d-arrays-by-summing-values/).
+
+## Problem Statement
+
+You are given two 2D integer arrays `nums1` and `nums2`.
+
+- `nums1[i] = [idi, vali]` indicates that the number with id `idi` has a value equal to `vali`.
+- `nums2[i] = [idi, vali]` indicates that the number with id `idi` has a value equal to `vali`.
+
+Each array contains **unique ids** and is sorted in ascending order by `id`.
+
+### Objective
+
+Merge the two arrays into one array sorted in ascending order by `id`, with the following rules:
+- Each `id` should appear only once.
+- The value for each `id` should be the sum of its values from both arrays.
+- If an `id` exists in only one array, use that value directly.
+- The result should be sorted in ascending order by `id`.
+
+---
+
+## Examples
+
+### Example 1
+
+```
+Input: nums1 = [[1,2],[2,3],[4,5]], nums2 = [[1,4],[3,2],[4,1]]
+Output: [[1,6],[2,3],[3,2],[4,6]]
+```
+
+### Example 2
+
+```
+Input: nums1 = [[2,4],[3,6],[5,5]], nums2 = [[1,3],[4,3]]
+Output: [[1,3],[2,4],[3,6],[4,3],[5,5]]
+```
+
+---
+
+## Constraints
+
+- `1 <= nums1.length, nums2.length <= 200`
+- `nums1[i].length == nums2[j].length == 2`
+- `1 <= idi, vali <= 1000`
+- Both arrays contain unique ids.
+- Both arrays are in strictly ascending order by `id`.
+
+---
+
+## Approach
+
+- Use a `TreeMap` to store `id` as key and the sum of values as value.
+- Populate the map from `nums1`.
+- For `nums2`, add values to existing keys or create new keys.
+- Convert the map entries back to a 2D array.
+
+---
+
+## Code
+
+```java
+import java.util.*;
+
+class Solution {
+
+    public int[][] mergeArrays(int[][] nums1, int[][] nums2) {
+        Map<Integer, Integer> keyToSum = new TreeMap<>();
+
+        // Copying the array nums1 to the map.
+        for (int[] nums : nums1) {
+            keyToSum.put(nums[0], nums[1]);
+        }
+
+        // Adding the values to existing keys or create new entries.
+        for (int[] nums : nums2) {
+            keyToSum.put(nums[0], keyToSum.getOrDefault(nums[0], 0) + nums[1]);
+        }
+
+        List<int[]> mergedList = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : keyToSum.entrySet()) {
+            mergedList.add(new int[] { entry.getKey(), entry.getValue() });
+        }
+
+        // Convert the mergedList to int[][] array.
+        int[][] mergedArray = new int[mergedList.size()][2];
+        for (int i = 0; i < mergedList.size(); i++) {
+            mergedArray[i] = mergedList.get(i);
+        }
+
+        return mergedArray;
+    }
+}
+```
+
+---
+
+## Time Complexity
+
+- Building the `TreeMap`: O(n + m), where n = length of nums1 and m = length of nums2
+- Converting map to array: O(n + m)
+
+**Overall Time Complexity: O(n + m)**
+
+---
+
+## Space Complexity
+
+- O(n + m) for the `TreeMap` and resulting array.
+
+---
+
+## Links
+
+- [LeetCode Problem Link](https://leetcode.com/problems/merge-two-2d-arrays-by-summing-values/)
+
+---
+
+## Author
+
+- Your Name (or GitHub username)
+
