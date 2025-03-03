@@ -105,6 +105,3 @@ class Solution {
 ---
 
 ## Author
-
-- Your Name (or GitHub username)
-
