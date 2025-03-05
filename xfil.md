@@ -1,4 +1,4 @@
-## Leetcode Problem 2579: Count Total Number of Colored Cells
+# Leetcode Problem 2579: Count Total Number of Colored Cells
 
 ## Problem Description
 
