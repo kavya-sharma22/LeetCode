@@ -1,0 +1,116 @@
+
+# Leetcode Problem 2379: Minimum Recolors to Get K Consecutive Black Blocks
+
+## Problem Description
+
+You are given a 0-indexed string `blocks` of length `n`, where `blocks[i]` is either `'W'` or `'B'`, representing the color of the `i`th block. 
+
+- The characters `'W'` and `'B'` denote the colors **white** and **black**, respectively.
+- You are also given an integer `k`, which is the desired number of consecutive black blocks.
+
+In one operation, you can **recolor a white block** such that it becomes a black block.
+
+### Goal
+Return the **minimum number of operations** needed such that there is at least one occurrence of `k` consecutive black blocks.
+
+---
+
+## Example 1
+
+```
+Input: blocks = "WBBWWBBWBW", k = 7
+Output: 3
+Explanation:
+One way to achieve 7 consecutive black blocks is to recolor the 0th, 3rd, and 4th blocks
+so that blocks = "BBBBBBBWBW". 
+It can be shown that there is no way to achieve 7 consecutive black blocks in less than 3 operations.
+Therefore, we return 3.
+```
+
+## Example 2
+
+```
+Input: blocks = "WBWBBBW", k = 2
+Output: 0
+Explanation:
+No changes need to be made, since 2 consecutive black blocks already exist.
+Therefore, we return 0.
+```
+
+---
+
+## Constraints
+
+- \( 1 \leq n \leq 100 \)
+- `blocks[i]` is either `'W'` or `'B'`.
+- \( 1 \leq k \leq n \)
+
+---
+
+## Approach
+
+### Sliding Window Technique
+- Use a **queue** to maintain a sliding window of size `k`.
+- **Step 1:** Initialize the queue with the first `k` elements from `blocks` and count the number of white blocks within this window.
+- **Step 2:** Iterate through the remaining characters in `blocks`:
+  - **Remove** the leftmost element from the queue (and adjust the white count).
+  - **Add** the next character from `blocks` to the queue (and adjust the white count accordingly).
+- **Step 3:** Track the **minimum number of white blocks** seen in any window of size `k`. This is the minimum number of recolors required.
+
+---
+
+## Code
+
+```java
+class Solution {
+
+    public int minimumRecolors(String blocks, int k) {
+        Queue<Character> blockQueue = new LinkedList<>();
+        int numWhites = 0;
+
+        // Initiate queue with first k values
+        for (int i = 0; i < k; i++) {
+            char currentChar = blocks.charAt(i);
+            if (currentChar == 'W') numWhites++;
+            blockQueue.add(currentChar);
+        }
+
+        // Set initial minimum
+        int numRecolors = numWhites;
+
+        for (int i = k; i < blocks.length(); i++) {
+            // Remove front element from queue and update current number of white blocks
+            if (blockQueue.poll() == 'W') numWhites--;
+
+            // Add current element to queue and update current number of white blocks
+            char currentChar = blocks.charAt(i);
+            if (currentChar == 'W') numWhites++;
+            blockQueue.add(currentChar);
+
+            // Update minimum
+            numRecolors = Math.min(numRecolors, numWhites);
+        }
+        return numRecolors;
+    }
+}
+```
+
+---
+
+## Complexity Analysis
+
+| Complexity | Value |
+|-------------|--------|
+| **Time Complexity** | `O(n)` |
+| **Space Complexity** | `O(k)` |
+
+- The algorithm processes each element in the string exactly once.
+- The queue maintains a constant size of `k` elements.
+
+---
+
+## Key Takeaways
+✅ Efficient sliding window solution.  
+✅ Handles edge cases effectively.  
+✅ Provides optimal performance for maximum constraints.
+
