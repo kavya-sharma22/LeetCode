@@ -126,8 +126,4 @@ public class Solution {
 
 ---
 
-## Key Takeaways
-✅ Efficient sliding window solution.  
-✅ Correctly handles circular sequences.  
-✅ Optimized to run within constraints.  
 
