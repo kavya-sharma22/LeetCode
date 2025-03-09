@@ -1,0 +1,134 @@
+
+# Leetcode Problem 3208: Alternating Groups II
+
+## Problem Description
+
+There is a circle of red and blue tiles. You are given:
+
+- An array of integers `colors` where:
+  - `colors[i] == 0` represents a **red** tile.
+  - `colors[i] == 1` represents a **blue** tile.
+- An integer `k` representing the size of the alternating group.
+
+### Definition
+An **alternating group** is every `k` contiguous tiles in the circle with alternating colors (each tile in the group except the first and last one has a different color from its left and right tiles).
+
+### Goal
+Return the **number of alternating groups**.
+
+**Note:** Since `colors` represents a **circle**, the first and the last tiles are considered adjacent.
+
+---
+
+## Examples
+
+### Example 1
+```
+Input: colors = [0,1,0,1,0], k = 3
+Output: 3
+Explanation:
+Valid alternating groups: [0,1,0], [1,0,1], [0,1,0]
+```
+
+### Example 2
+```
+Input: colors = [0,1,0,0,1,0,1], k = 6
+Output: 2
+Explanation:
+Valid alternating groups: [0,1,0,0,1,0], [1,0,0,1,0,1]
+```
+
+### Example 3
+```
+Input: colors = [1,1,0,1], k = 4
+Output: 0
+Explanation:
+No valid alternating groups found.
+```
+
+---
+
+## Constraints
+
+- \( 3 \leq 	ext{colors.length} \leq 10^5 \)
+- \( 0 \leq 	ext{colors[i]} \leq 1 \)
+- \( 3 \leq k \leq 	ext{colors.length} \)
+
+---
+
+## Approach
+
+### Step 1 - Extend the Array
+Since the array is circular, we extend the array by appending the first `k-1` elements to the end. This allows us to simplify the sliding window logic.
+
+### Step 2 - Sliding Window Technique
+- Initialize two pointers: `left` (start of the window) and `right` (end of the window).
+- Iterate through the extended array:
+  - If a pattern break occurs (two consecutive tiles with the same color), reset the window's `left` pointer.
+  - If the window's size reaches `k`, count it as a valid alternating group.
+- Continue moving the window by adjusting the `left` pointer.
+
+---
+
+## Code
+
+```java
+public class Solution {
+
+    public int numberOfAlternatingGroups(int[] colors, int k) {
+        int[] extendedColors = new int[colors.length + k - 1];
+        
+        // Extend the array to handle circular sequences
+        for (int i = 0; i < colors.length; i++) {
+            extendedColors[i] = colors[i];
+        }
+        for (int i = 0; i < k - 1; i++) {
+            extendedColors[colors.length + i] = colors[i];
+        }
+
+        int length = extendedColors.length;
+        int result = 0;
+        int left = 0, right = 1;
+
+        while (right < length) {
+            if (extendedColors[right] == extendedColors[right - 1]) {
+                // Pattern breaks, reset window
+                left = right;
+                right++;
+                continue;
+            }
+
+            // Expand the window
+            right++;
+
+            // Check for valid sequence
+            if (right - left < k) continue;
+
+            result++;
+            left++;
+        }
+
+        return result;
+    }
+}
+```
+
+---
+
+## Complexity Analysis
+
+| Complexity | Value |
+|-------------|--------|
+| **Time Complexity** | `O(n)` |
+| **Space Complexity** | `O(n)` (for the extended array) |
+
+- The sliding window efficiently traverses the entire array in linear time.
+- The extended array requires extra space equal to the original array size plus `k-1` elements.
+
+---
+
+## Key Takeaways
+✅ Efficient sliding window solution.  
+✅ Correctly handles circular sequences.  
+✅ Optimized to run within constraints.  
+
