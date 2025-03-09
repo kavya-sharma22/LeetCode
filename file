@@ -125,5 +125,3 @@ public class Solution {
 - The extended array requires extra space equal to the original array size plus `k-1` elements.
 
 ---
-
-
