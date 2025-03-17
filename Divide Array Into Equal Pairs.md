@@ -1,0 +1,73 @@
+# Divide Array Into Equal Pairs
+
+## Problem Statement
+You are given an integer array `nums` consisting of `2 * n` integers. You need to divide `nums` into `n` pairs such that:
+
+- Each element belongs to exactly one pair.
+- The elements present in a pair are equal.
+
+Return `true` if `nums` can be divided into `n` pairs, otherwise return `false`.
+
+### Example 1:
+**Input:**  
+`nums = [3,2,3,2,2,2]`  
+**Output:**  
+`true`  
+**Explanation:**
+There are 6 elements in `nums`, so they should be divided into `6 / 2 = 3` pairs. The pairs can be `(2, 2)`, `(3, 3)`, and `(2, 2)`, which satisfies all conditions.
+
+### Example 2:
+**Input:**  
+`nums = [1,2,3,4]`  
+**Output:**  
+`false`  
+**Explanation:**
+There is no way to divide `nums` into `4 / 2 = 2` pairs such that the pairs satisfy every condition.
+
+## Solution
+
+### Java Implementation
+```java
+import java.util.Arrays;
+
+class Solution {
+    public boolean divideArray(int[] nums) {
+        // Sort array to group equal elements together
+        Arrays.sort(nums);
+        
+        // Check consecutive pairs in sorted array
+        for (int pos = 0; pos < nums.length; pos += 2) {
+            // If any pair doesn't match, we can't form n equal pairs
+            if (nums[pos] != nums[pos + 1]) {
+                return false;
+            }
+        }
+        
+        // All pairs found successfully
+        return true;
+    }
+}
+```
+
+## Complexity Analysis
+
+- **Sorting the array**: `O(n log n)` (where `n = nums.length`)
+- **Iterating through the array**: `O(n)` (checking consecutive pairs)
+- **Overall Complexity**: `O(n log n)`, as sorting dominates the runtime complexity.
+
+## Explanation
+1. **Sorting Step**: Sorting ensures that all equal elements appear together, making it easier to form pairs.
+2. **Pair Validation**: By iterating through the sorted array in steps of 2, we can verify whether each adjacent pair consists of equal numbers.
+3. **Efficiency**: Sorting is the most expensive operation, making the time complexity `O(n log n)`, while the iteration step runs in `O(n)` time.
+
+### Space Complexity: `O(1)`
+- The solution sorts the input array in-place, requiring only constant extra space.
+
+## Notes
+- This solution efficiently checks for valid pairs using sorting and a single pass through the array.
+- Alternative approaches could use a **hashmap** to count occurrences (`O(n) time, O(n) space`).
+- This approach is optimal in terms of space efficiency.
+
+### Contributions
+Feel free to contribute by optimizing the solution or adding different approaches!
+
