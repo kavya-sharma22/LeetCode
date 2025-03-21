@@ -1,0 +1,158 @@
+# Find All Possible Recipes from Given Supplies
+
+## Problem Statement
+You have information about `n` different recipes. You are given a string array `recipes` and a 2D string array `ingredients`. The `i`-th recipe has the name `recipes[i]`, and you can create it if you have all the needed ingredients from `ingredients[i]`. A recipe can also be an ingredient for other recipes, i.e., `ingredients[i]` may contain a string that is in `recipes`.
+
+You are also given a string array `supplies` containing all the ingredients that you initially have, and you have an infinite supply of all of them.
+
+Return a list of all the recipes that you can create. You may return the answer in any order.
+
+**Note:** Two recipes may contain each other in their ingredients.
+
+### Example 1:
+#### Input:
+```java
+recipes = ["bread"]
+ingredients = [["yeast","flour"]]
+supplies = ["yeast","flour","corn"]
+```
+#### Output:
+```java
+["bread"]
+```
+#### Explanation:
+We can create "bread" since we have the ingredients "yeast" and "flour".
+
+---
+
+### Example 2:
+#### Input:
+```java
+recipes = ["bread","sandwich"]
+ingredients = [["yeast","flour"],["bread","meat"]]
+supplies = ["yeast","flour","meat"]
+```
+#### Output:
+```java
+["bread","sandwich"]
+```
+#### Explanation:
+We can create "bread" since we have the ingredients "yeast" and "flour".
+We can create "sandwich" since we have the ingredient "meat" and can create the ingredient "bread".
+
+---
+
+### Example 3:
+#### Input:
+```java
+recipes = ["bread","sandwich","burger"]
+ingredients = [["yeast","flour"],["bread","meat"],["sandwich","meat","bread"]]
+supplies = ["yeast","flour","meat"]
+```
+#### Output:
+```java
+["bread","sandwich","burger"]
+```
+#### Explanation:
+We can create "bread" since we have the ingredients "yeast" and "flour".
+We can create "sandwich" since we have the ingredient "meat" and can create the ingredient "bread".
+We can create "burger" since we have the ingredient "meat" and can create the ingredients "bread" and "sandwich".
+
+---
+
+## Constraints:
+- `n == recipes.length == ingredients.length`
+- `1 <= n <= 100`
+- `1 <= ingredients[i].length, supplies.length <= 100`
+- `1 <= recipes[i].length, ingredients[i][j].length, supplies[k].length <= 10`
+- `recipes[i]`, `ingredients[i][j]`, and `supplies[k]` consist only of lowercase English letters.
+- All the values of `recipes` and `supplies` combined are unique.
+- Each `ingredients[i]` does not contain any duplicate values.
+
+---
+
+## Solution Approach
+This problem can be solved using a **Topological Sorting (Kahn's Algorithm) approach** or **Breadth-First Search (BFS)** since recipes depend on other ingredients, forming a directed dependency graph.
+
+### Algorithm:
+1. Store all initial `supplies` in a **set** to track available ingredients.
+2. Maintain a **queue** of recipe indices.
+3. Iterate through the queue and check if a recipe can be made using only available ingredients.
+4. If possible, add the recipe to the `available` set and move to the next recipe.
+5. Continue until no new recipes can be created.
+
+### Complexity Analysis
+#### **Time Complexity: O(n * m)**
+- `n` is the number of recipes, and `m` is the average number of ingredients per recipe.
+- Each recipe is checked at most once, and each ingredient is checked within that loop, leading to `O(n * m)` complexity.
+
+#### **Space Complexity: O(n + m)**
+- The **set** stores all available supplies and created recipes, contributing to `O(n) + O(m)`.
+- The **queue** holds recipes that are being processed, contributing to `O(n)`.
+- Overall, `O(n + m)` space is required.
+
+---
+
+## Java Implementation
+```java
+import java.util.*;
+
+class Solution {
+    public List<String> findAllRecipes(
+        String[] recipes,
+        List<List<String>> ingredients,
+        String[] supplies
+    ) {
+        // Track available ingredients and recipes
+        Set<String> available = new HashSet<>();
+        for (String supply : supplies) {
+            available.add(supply);
+        }
+
+        // Queue to process recipe indices
+        Queue<Integer> recipeQueue = new LinkedList<>();
+        for (int idx = 0; idx < recipes.length; ++idx) {
+            recipeQueue.offer(idx);
+        }
+
+        List<String> createdRecipes = new ArrayList<>();
+        int lastSize = -1;
+
+        // Continue while we keep finding new recipes
+        while (available.size() > lastSize) {
+            lastSize = available.size();
+            int queueSize = recipeQueue.size();
+
+            // Process all recipes in current queue
+            while (queueSize-- > 0) {
+                int recipeIdx = recipeQueue.poll();
+                boolean canCreate = true;
+
+                // Check if all ingredients are available
+                for (String ingredient : ingredients.get(recipeIdx)) {
+                    if (!available.contains(ingredient)) {
+                        canCreate = false;
+                        break;
+                    }
+                }
+
+                if (!canCreate) {
+                    recipeQueue.offer(recipeIdx);
+                } else {
+                    // Recipe can be created - add to available items
+                    available.add(recipes[recipeIdx]);
+                    createdRecipes.add(recipes[recipeIdx]);
+                }
+            }
+        }
+
+        return createdRecipes;
+    }
+}
+```
+
+---
+
+## Conclusion
+This solution efficiently determines all possible recipes that can be created using a **BFS approach with a queue**. The time complexity remains manageable for the given constraints, making it a practical approach for solving the problem.
+
