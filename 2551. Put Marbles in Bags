@@ -1,0 +1,96 @@
+# 2551 - Put Marbles in Bags
+
+## Problem Statement
+You are given `k` bags and a 0-indexed integer array `weights`, where `weights[i]` represents the weight of the `i`th marble. You need to divide the marbles into `k` bags following these rules:
+
+1. No bag should be empty.
+2. If the `i`th marble and `j`th marble are in a bag, then all marbles between `i` and `j` (inclusive) should also be in that same bag.
+3. The cost of a bag containing marbles from index `i` to `j` is `weights[i] + weights[j]`.
+4. The final score is the sum of the costs of all `k` bags.
+
+The task is to return the difference between the maximum and minimum possible scores of all valid distributions.
+
+## Examples
+
+### Example 1
+**Input:**
+```plaintext
+weights = [1,3,5,1], k = 2
+```
+**Output:**
+```plaintext
+4
+```
+**Explanation:**
+- Minimal score: `[1]`, `[3,5,1]` → (1+1) + (3+1) = 6
+- Maximal score: `[1,3]`, `[5,1]` → (1+3) + (5+1) = 10
+- Difference: `10 - 6 = 4`
+
+### Example 2
+**Input:**
+```plaintext
+weights = [1,3], k = 2
+```
+**Output:**
+```plaintext
+0
+```
+**Explanation:**
+- Only possible distribution: `[1]`, `[3]`
+- Minimal and maximal scores are the same.
+
+## Constraints
+- `1 <= k <= weights.length <= 10^5`
+- `1 <= weights[i] <= 10^9`
+
+## Approach
+
+### 1. Understanding the Key Idea
+- The cost of each bag depends on the first and last element in the subarray.
+- To find the minimum and maximum possible scores, we need to optimize how we form `k` bags.
+- We analyze the sum of adjacent pairs in `weights` because the problem essentially boils down to choosing optimal partitions.
+
+### 2. Sorting Strategy
+- Compute the `n-1` adjacent pair sums (`weights[i] + weights[i+1]`).
+- Sort these sums in ascending order.
+- The `k-1` smallest values give the minimum score.
+- The `k-1` largest values give the maximum score.
+- Compute the difference between the two.
+
+## Implementation
+### Java Solution
+```java
+import java.util.Arrays;
+
+class Solution {
+    public long putMarbles(int[] weights, int k) {
+        int n = weights.length;
+        int[] pairWeights = new int[n - 1];
+        
+        for (int i = 0; i < n - 1; ++i) {
+            pairWeights[i] = weights[i] + weights[i + 1];
+        }
+        
+        Arrays.sort(pairWeights);
+        
+        long answer = 0L;
+        for (int i = 0; i < k - 1; ++i) {
+            answer += pairWeights[n - 2 - i] - pairWeights[i];
+        }
+        
+        return answer;
+    }
+}
+```
+
+## Complexity Analysis
+- **Sorting Step:** `O(n log n)`
+- **Pair Sum Computation:** `O(n)`
+- **Final Computation:** `O(k) ≈ O(n)`
+- **Overall Complexity:** `O(n log n)` (due to sorting)
+
+## Summary
+- The problem requires partitioning marbles optimally to maximize and minimize scores.
+- The key observation is that adjacent pair sums determine bag scores.
+- Sorting helps efficiently compute both maximum and minimum possible scores.
+- The final result is the difference between these two scores.
