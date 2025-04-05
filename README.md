@@ -1,39 +1,137 @@
-# Daily LeetCode Challenge
+# 🧮 LeetCode Problem 1863: Sum of All Subset XOR Totals
 
-## About This Repository
+## 📝 Problem Statement
 
-I am solving daily LeetCode problems and uploading a new solution every day. Each day's solution will include:
-- Problem statement
-- Explanation of the approach
-- Optimized solution in Java
-- Complexity analysis
+The XOR total of an array is defined as the bitwise XOR of all its elements, or `0` if the array is empty.
 
-## Why This Challenge?
-Practicing LeetCode problems daily helps in:
-- Improving problem-solving skills
-- Strengthening Data Structures and Algorithms (DSA) concepts
-- Preparing for coding interviews effectively
+Given an array `nums`, return the **sum of all XOR totals for every subset of nums**.
 
-## Repository Clone Link:
-
-```
-https://github.com/kavya-sharma22/LeetCode
-```
-
-## How to Use This Repository?
-Each day's solution will be available as a separate file in this repository. The file name will follow the format:
-
-```
-Problem-Name.md
-```
-
-## Technologies Used
-- **Programming Language:** Java
-- **Platform:** LeetCode
-
-## Join Me!
-If you're also solving daily LeetCode problems, feel free to collaborate or discuss solutions. Let's improve together!
+> An array `a` is a subset of an array `b` if `a` can be obtained from `b` by deleting some (possibly zero) elements of `b`.
 
 ---
 
-Stay consistent and happy coding! 🚀
+## 💡 Examples
+
+### Example 1:
+```
+Input: nums = [1, 3]
+Output: 6
+Explanation: The 4 subsets are:
+- []         -> XOR = 0
+- [1]        -> XOR = 1
+- [3]        -> XOR = 3
+- [1, 3]     -> XOR = 1 ^ 3 = 2
+Sum = 0 + 1 + 3 + 2 = 6
+```
+
+### Example 2:
+```
+Input: nums = [5, 1, 6]
+Output: 28
+```
+
+### Example 3:
+```
+Input: nums = [3, 4, 5, 6, 7, 8]
+Output: 480
+```
+
+---
+
+## 🔐 Constraints
+
+- `1 <= nums.length <= 12`
+- `1 <= nums[i] <= 20`
+
+---
+
+## ✅ Approach
+
+This solution uses **backtracking** to generate all subsets of the input array and computes the XOR of each subset.
+
+### Steps:
+1. Generate all subsets using recursion.
+2. For each subset, calculate the XOR of its elements.
+3. Accumulate the XOR values for the final result.
+
+---
+
+## 💻 Java Code
+
+```java
+import java.util.*;
+
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        List<List<Integer>> subsets = new ArrayList<>();
+        generateSubsets(nums, 0, new ArrayList<>(), subsets);
+
+        int result = 0;
+        for (List<Integer> subset : subsets) {
+            int subsetXORTotal = 0;
+            for (int num : subset) {
+                subsetXORTotal ^= num;
+            }
+            result += subsetXORTotal;
+        }
+        return result;
+    }
+
+    private void generateSubsets(int[] nums, int index, List<Integer> subset, List<List<Integer>> subsets) {
+        if (index == nums.length) {
+            subsets.add(new ArrayList<>(subset));
+            return;
+        }
+
+        // Include nums[index]
+        subset.add(nums[index]);
+        generateSubsets(nums, index + 1, subset, subsets);
+
+        // Exclude nums[index]
+        subset.remove(subset.size() - 1);
+        generateSubsets(nums, index + 1, subset, subsets);
+    }
+}
+```
+
+---
+
+## 📊 Complexity Analysis
+
+### ⏱ Time Complexity: `O(n * 2^n)`
+- Total subsets = `2^n`
+- XOR for each subset takes up to `O(n)`
+- So total = `O(n * 2^n)`
+
+### 🧠 Space Complexity: `O(n * 2^n)`
+- Storing all subsets = `2^n` subsets, each can have up to `n` elements
+
+---
+
+## 🧪 Test Cases
+
+```java
+Input: [1, 3]
+Output: 6
+
+Input: [5, 1, 6]
+Output: 28
+
+Input: [3, 4, 5, 6, 7, 8]
+Output: 480
+```
+
+---
+
+## 🏷 Tags
+
+- Recursion
+- Backtracking
+- Bit Manipulation
+- Subsets
+
+---
+
+## 🔗 LeetCode Link
+
+[Click here to view on LeetCode](https://leetcode.com/problems/sum-of-all-subset-xor-totals/)
