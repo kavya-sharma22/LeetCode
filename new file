@@ -1,0 +1,114 @@
+# 🔢 Leetcode 3375: Minimum Operations to Make Array Values Equal to K (Java Solution)
+
+## 📘 Problem Description
+You are given an integer array `nums` and an integer `k`.
+
+An integer `h` is called **valid** if all values in the array that are strictly greater than `h` are **identical**.
+
+You are allowed to perform the following operation:
+- Choose a valid integer `h`.
+- For all `i` such that `nums[i] > h`, set `nums[i] = h`.
+
+Return the **minimum number of operations** required to make all elements equal to `k`. If impossible, return `-1`.
+
+---
+
+## 🧪 Examples
+
+### Example 1
+```java
+Input: nums = [5,2,5,4,5], k = 2
+Output: 2
+Explanation: Perform operations with valid integers 4 and then 2.
+```
+
+### Example 2
+```java
+Input: nums = [2,1,2], k = 2
+Output: -1
+Explanation: Since 1 < 2, we can never reach k = 2 for all elements.
+```
+
+### Example 3
+```java
+Input: nums = [9,7,5,3], k = 1
+Output: 4
+Explanation: Valid operations: 7 -> 5 -> 3 -> 1
+```
+
+---
+
+## ✅ Constraints
+- `1 <= nums.length <= 100`
+- `1 <= nums[i] <= 100`
+- `1 <= k <= 100`
+
+---
+
+## 💡 Approach
+
+We iterate through the array:
+- If any number is less than `k`, it's **impossible** to make all values `k`, so return `-1`.
+- If any number is **greater than** `k`, we add it to a `Set`.
+- The minimum number of operations equals the number of **unique values greater than `k`**.
+
+This works because each operation can bring **one unique value greater than `k`** down to `k`.
+
+---
+
+## 🧠 Java Code
+```java
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        Set<Integer> st = new HashSet<>();
+        for (int x : nums) {
+            if (x < k) {
+                return -1;
+            } else if (x > k) {
+                st.add(x);
+            }
+        }
+        return st.size();
+    }
+}
+```
+
+---
+
+## 🛠️ How to Run Locally
+
+### 1. Clone the Repo
+```bash
+git clone https://github.com/your-username/leetcode-solutions.git
+cd leetcode-solutions
+```
+
+### 2. Compile the Java Code
+```bash
+javac Solution.java
+```
+
+### 3. Run the Program
+Create a `Main.java` file to call and test `minOperations()`.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        int[] nums = {5,2,5,4,5};
+        int k = 2;
+        System.out.println(sol.minOperations(nums, k));  // Output: 2
+    }
+}
+```
+
+---
+
+## ✨ Author
+**Harsh Verma**  
+[Portfolio](https://harshverma724.github.io/Portfolio-Website) | [LinkedIn](https://linkedin.com/in/harshverma724)
+
+---
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
