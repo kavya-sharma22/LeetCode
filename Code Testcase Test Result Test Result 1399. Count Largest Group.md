@@ -1,6 +1,6 @@
 # LeetCode 1399: Count Largest Group
 
-## 🧩 Problem Description
+## 🧩 Problem Description  
 
 You are given an integer `n`. Each number from 1 to `n` is grouped according to the **sum of its digits**. Your task is to return the **number of groups that have the largest size**.
 
